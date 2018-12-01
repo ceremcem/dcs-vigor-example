@@ -1,0 +1,13 @@
+#!/bin/bash
+set -eu -o pipefail
+safe_source () { [[ ! -z ${1:-} ]] && source $1; _dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"; _sdir=$(dirname "$(readlink -f "$0")"); }; safe_source
+# end of bash boilerplate
+
+cd $_sdir
+safe_source /home/aea/apps/gpio-server/dcs/tools/service-runner/tmux-launch
+#safe_source $_sdir/tmux-launch
+launch-service $(calc-session-name $(readlink -f "$0")) # dirname-scriptname
+
+# run commands in tmux session
+run-in-tmux "./run-ls dcs-server.ls"
+run-in-tmux "sudo ./run-ls io-server.ls"
