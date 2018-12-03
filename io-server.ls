@@ -14,7 +14,7 @@ handles =
         'green': 7
         'beep': 11
 
-driver = new RpiGPIODriverSimulator
+driver = new RpiGPIODriver
 for dir, pin of handles
     for name, num of pin
         # See the RpiGPIODriver for handle format
