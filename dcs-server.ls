@@ -1,4 +1,4 @@
-require! 'dcs/services/dcs-proxy': {AuthDB, DcsTcpServer}
+require! 'dcs/services/dcs-proxy/tcp/server': {AuthDB, DcsTcpServer}
 require! './config': {dcs-port}
 
 # Create auth db

@@ -10,47 +10,45 @@ client = new DcsTcpClient port: dcs-port
 io = {}
 for <[ red green beep ]>
     io[..] = new IoProxyClient do
-        timeout: 1000ms
+        timeout: 500ms
         route: "@sgw.#{..}"
         fps: 12fps
         #debug: true
 
 <~ client.on \logged-in
 # toggle led
-do
+period = 200ms
+do ~>
     val = true
     <~ :lo(op) ~>
         err <~ io.red.write val
         if err
-            console.log "error..."
+            console.log "error...", err
         else
-            console.log "success"
-        val := not val
-        <~ sleep 1000ms
+            val := not val
+        <~ sleep period
         lo(op)
 
-do
+do ~>
     val = true
     <~ :lo(op) ~>
         err <~ io.green.write val
         if err
-            console.log "error..."
+            console.log "error...", err
         else
-            console.log "success"
-        val := not val
-        <~ sleep 1000ms
+            val := not val
+        <~ sleep period
         lo(op)
 
-do
+do ~>
     val = true
     <~ :lo(op) ~>
         err <~ io.beep.write val
         if err
-            console.log "error..."
+            console.log "error...", err
         else
-            console.log "success"
-        val := not val
-        <~ sleep 1000ms
+            val := not val
+        <~ sleep period
         lo(op)
 
 io.red.on \error, (err) ~>

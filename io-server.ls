@@ -1,11 +1,12 @@
 require! 'dcs': {DcsTcpClient, IoProxyHandler}
-require! 'dcs/drivers/rpi': {RpiGPIODriver}
+require! 'dcs/drivers/rpi': {RpiGPIODriver, RpiGPIODriverSimulator}
 require! './config': {digital-io, namespace, dcs-port}
 
 credentials =
     user: 'sgw'
     password: "1234"
 
+new DcsTcpClient port: dcs-port .login credentials
 
 handles =
     out:
@@ -13,7 +14,7 @@ handles =
         'green': 7
         'beep': 11
 
-driver = new RpiGPIODriver
+driver = new RpiGPIODriverSimulator
 for dir, pin of handles
     for name, num of pin
         # See the RpiGPIODriver for handle format
@@ -21,7 +22,4 @@ for dir, pin of handles
             name: name
             gpio: num
             out: dir is \out
-
         new IoProxyHandler handle, "@sgw.#{handle.name}", driver
-
-new DcsTcpClient port: dcs-port .login credentials
