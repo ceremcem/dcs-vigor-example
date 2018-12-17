@@ -11,3 +11,4 @@ launch-service $(calc-session-name "$sname") # dirname-scriptname
 # run commands in tmux session
 run-in-tmux "./run-ls dcs-server.ls"
 run-in-tmux "sudo ./run-ls io-server.ls"
+run-in-tmux "./run-ls test.ls"

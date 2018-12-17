@@ -1,6 +1,14 @@
 require! 'dcs': {DcsTcpClient, IoProxyClient, sleep}
 require! './config': {dcs-port}
 
+require! 'dns'
+internet-available = (cb) -> 
+    dns.lookup \google.com, (err) -> 
+        if err?code is \ENOTFOUND
+            cb(no)
+        else
+            cb(yes)
+
 credentials =
     user: 'test-user'
     password: "1234"
@@ -17,18 +25,19 @@ for <[ red green beep ]>
 
 <~ client.on \logged-in
 # toggle led
-period = 200ms
-do ~>
-    val = true
-    <~ :lo(op) ~>
-        err <~ io.red.write val
-        if err
-            console.log "error...", err
+do ~> 
+    <~ :lo(op) ~> 
+        available <~ internet-available
+        if available
+            io.beep.write false
         else
-            val := not val
-        <~ sleep period
+            io.beep.write true
+        <~ sleep 100ms
+        io.beep.write false
+        <~ sleep 5000ms 
         lo(op)
 
+period = 3000ms
 do ~>
     val = true
     <~ :lo(op) ~>
@@ -43,7 +52,7 @@ do ~>
 do ~>
     val = true
     <~ :lo(op) ~>
-        err <~ io.beep.write val
+        err <~ io.red.write val
         if err
             console.log "error...", err
         else
