@@ -19,10 +19,12 @@ for let <[ red green beep a1 a2 a3 ]>
         console.log "state changed for #{..}: ", value
 
 <~ client.on \logged-in
-period = 3000ms
+#<~ sleep 1000ms
+period = 1000ms
 do ~>
     val = true
     <~ :lo(op) ~>
+        console.log "setting green: #{val}"
         err <~ io.green.write val
         if err
             console.log "error...", err
@@ -34,6 +36,7 @@ do ~>
 do ~>
     val = true
     <~ :lo(op) ~>
+        console.log "setting red: #{val}"
         err <~ io.red.write val
         if err
             console.log "error...", err
