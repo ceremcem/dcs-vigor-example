@@ -1,3 +1,4 @@
 ./
 ./transports/tcp/
 ./drivers/rpi/
+./transports/serial-port
